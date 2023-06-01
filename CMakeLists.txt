@@ -10,12 +10,16 @@ qt_standard_project_setup()
 
 qt_add_executable(appcountdown-qml
     main.cpp
+    src/CountDown.h
+    src/CountDown.cpp
 )
 
 qt_add_qml_module(appcountdown-qml
     URI countdown-qml
     VERSION 1.0
-    QML_FILES Main.qml
+    QML_FILES
+        qml/Main.qml
+        qml/Countdown.qml
 )
 
 set_target_properties(appcountdown-qml PROPERTIES
