@@ -34,6 +34,7 @@ void CountDown::onTimeout()
     }
     else
     {
+        emit countFinished();
         reset();
     }
 }

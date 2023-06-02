@@ -78,10 +78,12 @@ Rectangle {
             bgmCombo.enabled = false
             textField.enabled = false
         }
+
         onClicked: {
             countDown.onStartBtnClicked()
-            musicPlayer.onStart()
             startBtn.changeBtn()
+            if (startBtn.text !== "")
+                musicPlayer.onStart()
         }
     }
 
@@ -135,5 +137,13 @@ Rectangle {
         font.pixelSize: 200
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+    }
+
+    Connections {
+        target: countDown
+        onCountFinished: {
+            cancelBtn.changeBtn()
+            musicPlayer.onCancel()
+        }
     }
 }

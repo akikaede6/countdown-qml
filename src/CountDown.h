@@ -21,6 +21,7 @@ public:
 signals:
     void showTextChanged();
     void pauseChanged();
+    void countFinished();
 
 private slots:
     void onTimeout();

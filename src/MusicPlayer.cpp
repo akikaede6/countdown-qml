@@ -11,6 +11,7 @@ MusicPlayer::MusicPlayer(const CountDown& countDown, QObject *parent)
     QAudioOutput *audioOutput = new QAudioOutput;
     m_player->setAudioOutput(audioOutput);
     m_player->setSource(QUrl(m_bgmList[0]));
+    m_player->setLoops(QMediaPlayer::Infinite);
 }
 
 void MusicPlayer::onSetSource(int index)
