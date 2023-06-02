@@ -3,6 +3,7 @@
 #include <QQmlContext>
 
 #include "src/CountDown.h"
+#include "src/MusicPlayer.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +17,9 @@ int main(int argc, char *argv[])
 
     CountDown countDown;
     engine.rootContext()->setContextProperty("countDown", &countDown);
+
+    MusicPlayer musicPlayer(countDown);
+    engine.rootContext()->setContextProperty("musicPlayer", &musicPlayer);
 
     engine.load(url);
 

@@ -33,6 +33,7 @@ Rectangle {
             { text: qsTr("BGM2") },
             { text: qsTr("BGM3") }
         ]
+        onCurrentIndexChanged: musicPlayer.onSetSource(currentIndex)
         font.pixelSize: 25
     }
 
@@ -62,35 +63,66 @@ Rectangle {
 
     Button {
         id: startBtn
+        enabled: true
         x: 280
         y: 100
         width: 110
         height: 40
         text: qsTr("Start")
         font.pixelSize: 25
-        onClicked: countDown.onStartBtnClicked()
+
+        function changeBtn() {
+            startBtn.enabled = false
+            pauseBtn.enabled = true
+            cancelBtn.enabled = true
+            bgmCombo.enabled = false
+            textField.enabled = false
+        }
+        onClicked: {
+            countDown.onStartBtnClicked()
+            musicPlayer.onStart()
+            startBtn.changeBtn()
+        }
     }
 
     Button {
         id: pauseBtn
+        enabled: false
         x: 400
         y: 100
         width: 110
         height: 40
         text: pauseText
         font.pixelSize: 25
-        onClicked: countDown.onPauseBtnClicked()
+        onClicked: {
+            countDown.onPauseBtnClicked()
+            musicPlayer.onPause()
+        }
     }
 
     Button {
         id: cancelBtn
+        enabled: false
         x: 520
         y: 100
         width: 110
         height: 40
         text: qsTr("Cancel")
         font.pixelSize: 25
-        onClicked: countDown.onCancelBtnClicked()
+
+        function changeBtn() {
+            startBtn.enabled = true
+            pauseBtn.enabled = false
+            cancelBtn.enabled = false
+            bgmCombo.enabled = true
+            textField.enabled = true
+        }
+
+        onClicked: {
+            countDown.onCancelBtnClicked()
+            musicPlayer.onCancel()
+            cancelBtn.changeBtn()
+        }
     }
 
     Text {
