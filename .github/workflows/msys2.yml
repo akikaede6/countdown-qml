@@ -1,0 +1,47 @@
+name: Msys2
+on:
+  push:
+    paths:
+      - 'CMakeLists.txt'
+      - 'main.cpp'
+      - 'src/**'
+      - '.github/workflows/msys2.yml'
+  pull_request:
+    paths:
+      - 'CMakeLists.txt'
+      - 'main.cpp'
+      - 'src/**'
+      - '.github/workflows/msys2.yml'
+jobs:
+  msys2-mingw64:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: git mingw-w64-x86_64-gcc mingw-w64-x86_64-qt6-static mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake tree
+      - name: CI-Build
+        run: |
+          echo 'Running in MSYS2!'
+          cmake -H. -Bbuild -DCMAKE_PREFIX_PATH="/mingw64/qt6-static"
+          cmake --build build
+          tree
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: Countdown-qml-${{ github.sha}}.exe
+          path: ./build/appcountdown-qml.exe
+      - name: uploadRelease
+        if: startsWith(github.event.ref, 'refs/tags/')
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./build/appcountdown-qml.exe
+          asset_name: appcountdown-qml-${{ github.ref_name }}-msys2-mingw64-standalone.exe
+          tag: ${{ github.ref }}
+          overwrite: true
